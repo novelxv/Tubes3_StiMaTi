@@ -1,15 +1,15 @@
 public static class BoyerMoore {
     /* Function to match two patterns with Boyer-Moore Algorithm */
-    public static bool isAMatch(string pattern1, string pattern2){
+    public static bool IsAMatch(string pattern1, string pattern2){
         // array untuk menyimpan bad character
         int[] badChar = new int[256];
         // buat bad character array
-        makeBadChar(pattern1, pattern1.Length, ref badChar);
+        MakeBadChar(pattern1, pattern1.Length, ref badChar);
 
         // array untuk menyimpan good suffix
         int[] goodSuffix = new int[pattern1.Length];
         // buat good suffix array
-        makeGoodSuffix(pattern1, pattern1.Length, ref goodSuffix);
+        MakeGoodSuffix(pattern1, pattern1.Length, ref goodSuffix);
 
         int shiftIndex = 0;
         // iterasi sepanjang pattern2
@@ -32,7 +32,7 @@ public static class BoyerMoore {
     }
 
     /* Function to create the bad character array */
-    private static void makeBadChar(string pattern, int length, ref int[] badChar){
+    private static void MakeBadChar(string pattern, int length, ref int[] badChar){
         // inisialisasi semua karakter dengan -1
         for (int i = 0; i < 256; i++){
             badChar[i] = -1;
@@ -44,7 +44,7 @@ public static class BoyerMoore {
     }
 
     /* Function to create the good suffix array */
-    private static void makeGoodSuffix(string pattern, int length, ref int[] goodSuffix){
+    private static void MakeGoodSuffix(string pattern, int length, ref int[] goodSuffix){
         // array untuk menyimpan nilai border
         int[] border = new int[length + 1];
         int i = length;

@@ -1,11 +1,11 @@
 public static class KMP {
     /* Function to match two patterns with KMP Algorithm */
-    public static bool isAMatch(string pattern1, string pattern2){
+    public static bool IsAMatch(string pattern1, string pattern2){
         // array untuk menyimpan longest prefix suffix
         int[] lpsArray = new int[pattern1.Length];
         int i, j = 0;
         // buat lpsArray
-        makeLPSArray(pattern1, pattern1.Length, lpsArray);
+        MakeLPSArray(pattern1, pattern1.Length, lpsArray);
         // iterasi sepanjang pattern2
         while (j < pattern2.Length){
             // jika karakter sama
@@ -33,7 +33,7 @@ public static class KMP {
     }
 
     /* Function to create the lpsArray */
-    private static void makeLPSArray(string pattern, int length, int[] lpsArray){
+    private static void MakeLPSArray(string pattern, int length, int[] lpsArray){
         int prevLength = 0; // panjang prefix suffix sebelumnya
         lpsArray[0] = 0;
         int i = 1;
