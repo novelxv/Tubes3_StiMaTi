@@ -6,11 +6,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Bogus" Version="35.5.1" />
     <PackageReference Include="MySql.Data" Version="8.4.0" />
+    <PackageReference Include="System.Text.Json" Version="8.0.0" />
+    <Compile Include="Program.cs" />
+    <Compile Include="algo\KMP.cs" />
+    <Compile Include="algo\BM.cs" />
+    <Compile Include="algo\Similarity.cs" />
   </ItemGroup>
 
 </Project>
