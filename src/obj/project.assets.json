@@ -298,6 +298,19 @@
           }
         }
       },
+      "System.Resources.Extensions/4.7.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/System.Resources.Extensions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Resources.Extensions.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "System.Runtime/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -1132,6 +1145,26 @@
         "system.reflection.primitives.nuspec"
       ]
     },
+    "System.Resources.Extensions/4.7.1": {
+      "sha512": "cuRdQps4IdpvMzgRrtKpXLckKXvc6XzgmTNQ75wf9snAITrfDK759ucS+US0gt1vmspTjCHKSCXgvp0ysfrjkA==",
+      "type": "package",
+      "path": "system.resources.extensions/4.7.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net461/System.Resources.Extensions.dll",
+        "lib/net461/System.Resources.Extensions.xml",
+        "lib/netstandard2.0/System.Resources.Extensions.dll",
+        "lib/netstandard2.0/System.Resources.Extensions.xml",
+        "system.resources.extensions.4.7.1.nupkg.sha512",
+        "system.resources.extensions.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
     "System.Runtime/4.3.0": {
       "sha512": "JufQi0vPQ0xGnAczR13AUFglDyVYt4Kqnz1AZaiKZ5+GICq0/1MH/mO/eAJHt/mHW1zjKBJd7kV26SrxddAhiw==",
       "type": "package",
@@ -1822,35 +1855,29 @@
     "net8.0": [
       "Bogus >= 35.5.1",
       "MySql.Data >= 8.4.0",
+      "System.Resources.Extensions >= 4.7.1",
       "System.Text.Json >= 8.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Lenovo\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\raffa\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lenovo\\Project\\Tubes3_StiMaTi\\src\\src.csproj",
+      "projectUniqueName": "C:\\Users\\raffa\\OneDrive\\Dokumen\\GitHub\\Tubes3_StiMaTi\\src\\src.csproj",
       "projectName": "src",
-      "projectPath": "C:\\Users\\Lenovo\\Project\\Tubes3_StiMaTi\\src\\src.csproj",
-      "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lenovo\\Project\\Tubes3_StiMaTi\\src\\obj\\",
+      "projectPath": "C:\\Users\\raffa\\OneDrive\\Dokumen\\GitHub\\Tubes3_StiMaTi\\src\\src.csproj",
+      "packagesPath": "C:\\Users\\raffa\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\raffa\\OneDrive\\Dokumen\\GitHub\\Tubes3_StiMaTi\\src\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\raffa\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1882,6 +1909,10 @@
             "target": "Package",
             "version": "[8.4.0, )"
           },
+          "System.Resources.Extensions": {
+            "target": "Package",
+            "version": "[4.7.1, )"
+          },
           "System.Text.Json": {
             "target": "Package",
             "version": "[8.0.0, )"
@@ -1903,7 +1934,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.301/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
