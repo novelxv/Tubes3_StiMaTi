@@ -1,63 +1,62 @@
 namespace algo {
     public static class KMP {
-        /* Function to match two patterns with KMP Algorithm */
-        public static bool IsAMatch(string pattern1, string pattern2){
-            // array untuk menyimpan longest prefix suffix
-            int[] lpsArray = new int[pattern1.Length];
+        /* finds if the pattern is found in the text using KMP algorithm */
+        public static bool kmpMatch(string pattern, string text){
             int i = 0;
             int j = 0;
-            // buat lpsArray
-            MakeLPSArray(pattern1, pattern1.Length, lpsArray);
-            // iterasi sepanjang pattern2
-            while (j < pattern2.Length){
-                // jika karakter sama
-                if (pattern1[i] == pattern2[j]){
+            while (i < text.Length){
+                if (pattern[j] == text[i]){
+                    if (j == pattern.Length - 1){
+                        return true;
+                    }
                     i++;
                     j++;
                 }
-                // jika pattern1 sudah habis
-                if (i == pattern1.Length){
-                    return true;
+                else if (j == 0){
+                    i++;
                 }
-                // jika karakter tidak sama
-                else if (j < pattern2.Length && pattern1[i] != pattern2[j]){
-                    if (i != 0){
-                        // kembali ke nilai LPS sebelumnya
-                        i = lpsArray[i - 1];
-                    } 
-                    else {
-                        // geser teks
-                        j++;
-                    }
+                else {
+                    int k = j - 1;
+                    j = borderFunction(pattern, k);
                 }
             }
             return false;
         }
 
-        /* Function to create the lpsArray */
-        private static void MakeLPSArray(string pattern, int length, int[] lpsArray){
-            int prevLength = 0; // panjang prefix suffix sebelumnya
-            lpsArray[0] = 0;
-            int i = 1;
-            // iterasi sepanjang pattern
-            while (i < length){
-                // jika karakter pada pattern cocok dengan karakter prefix
-                if (pattern[i] == pattern[prevLength]){
-                    prevLength++;
-                    lpsArray[i] = prevLength;
-                    i++;
-                } 
-                else {
-                    if (prevLength != 0){
-                        // kembali ke nilai LPS sebelumnya
-                        prevLength = lpsArray[prevLength - 1];
-                    } 
-                    else {
-                        lpsArray[i] = 0;
-                        i++;
+        /* finds the border function of the pattern */
+        public static int borderFunction(string pattern, int k){
+            if (k == 0){
+                return 0;
+            }
+            string[] prefixes = allPrefixes(pattern[..k]);
+            string[] suffixes = allSuffixes(pattern[1..k]);
+            int maxLength = 0;
+            foreach (string s in prefixes){
+                foreach (string t in suffixes){
+                    if (s == t){
+                        maxLength = Math.Max(maxLength, s.Length);
                     }
                 }
             }
+            return maxLength;
+        }
+
+        /* finds all prefixes of the pattern */
+        public static string[] allPrefixes(string pattern){
+            string[] prefixes = new string[pattern.Length];
+            for (int i = 0; i < pattern.Length; i++){
+                prefixes[i] = pattern[..i];
+            }
+            return prefixes;
+        }
+
+        /* finds all suffixes of the pattern */
+        public static string[] allSuffixes(string pattern){
+            string[] suffixes = new string[pattern.Length];
+            for (int i = 0; i < pattern.Length; i++){
+                suffixes[i] = pattern[i..];
+            }
+            return suffixes;
         }
     }
 }
