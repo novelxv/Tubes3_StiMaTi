@@ -3,13 +3,14 @@
 class Program
 {
     static void Main(string[] args)
-    {
+    {   
+        Console.WriteLine("Fingerprint Matching Program"); 
         // Contoh input sidik jari
-        string inputFingerprint = "11001010"; // Mendefinisikan sidik jari input sebagai string
+        string inputFingerprint = "11001000"; // Mendefinisikan sidik jari input sebagai string
         List<string> databaseFingerprints = new List<string> // Mendefinisikan list sidik jari dalam database
         {
             "11001010",
-            "11001000",
+            "1298372180011093712110010008789707897987",
             "11001001",
             "01010101"
         };
@@ -18,7 +19,7 @@ class Program
         bool matchFound = false; // Inisialisasi variabel untuk menyimpan status kecocokan
         foreach (var dbFingerprint in databaseFingerprints) // Loop melalui setiap sidik jari dalam database
         {
-            if (KMP.IsAMatch(inputFingerprint, dbFingerprint) || BoyerMoore.IsAMatch(inputFingerprint, dbFingerprint)) // Memeriksa kecocokan menggunakan algoritma KMP atau Boyer-Moore
+            if (KMP.kmpMatch(inputFingerprint, dbFingerprint)) // Memeriksa kecocokan menggunakan algoritma KMP atau Boyer-Moore
             {
                 Console.WriteLine("Exact match found with fingerprint: " + dbFingerprint); // Mencetak pesan jika ditemukan kecocokan
                 matchFound = true; // Mengatur variabel status kecocokan menjadi true
