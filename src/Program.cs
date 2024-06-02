@@ -19,7 +19,7 @@ class Program
         bool matchFound = false; // Inisialisasi variabel untuk menyimpan status kecocokan
         foreach (var dbFingerprint in databaseFingerprints) // Loop melalui setiap sidik jari dalam database
         {
-            if (KMP.kmpMatch(inputFingerprint, dbFingerprint)) // Memeriksa kecocokan menggunakan algoritma KMP atau Boyer-Moore
+            if (KMP.KMPMatch(inputFingerprint, dbFingerprint)) // Memeriksa kecocokan menggunakan algoritma KMP atau Boyer-Moore
             {
                 Console.WriteLine("Exact match found with fingerprint: " + dbFingerprint); // Mencetak pesan jika ditemukan kecocokan
                 matchFound = true; // Mengatur variabel status kecocokan menjadi true
