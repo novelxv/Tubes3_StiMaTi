@@ -18,7 +18,7 @@
     <PackageReference Include="System.Resources.Extensions" Version="4.7.1" />
     <Compile Include="Program.cs" />
     <Compile Include="Database\DatabaseManager.cs" />
-    <Compile Include="Database\Data.cs" />
+    <Compile Include="Database\DataProcessor.cs" />
     <Compile Include="algo\KMP.cs" />
     <Compile Include="algo\BM.cs" />
     <Compile Include="algo\Similarity.cs" />

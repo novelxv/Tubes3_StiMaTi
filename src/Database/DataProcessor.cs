@@ -1,4 +1,9 @@
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using MySql.Data.MySqlClient;
+using Image = SixLabors.ImageSharp.Image;
+using System.Text;
+using SixLabors.ImageSharp.Processing;
 
 namespace Database {
     /* Biodata */
@@ -22,14 +27,14 @@ namespace Database {
         public string? Nama { get; set; }
     }
 
-    /* Data */
-    public class Data {
+    /* Data Processor */
+    public class DataProcessor {
         public List<Biodata> BiodataList { get; set; }
         public List<SidikJari> SidikJariList { get; set; }
         private readonly DatabaseManager _dbManager;
 
         /* Constructor */
-        public Data(DatabaseManager manager){
+        public DataProcessor(DatabaseManager manager){
             _dbManager = manager;
             BiodataList = [];
             SidikJariList = [];
@@ -75,10 +80,50 @@ namespace Database {
             using MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read()) {
                 SidikJariList.Add(new SidikJari {
-                    BerkasCitra = reader["berkas_citra"].ToString(),
+                    BerkasCitra = ConvertImageToAscii(reader["berkas_citra"].ToString()),
                     Nama = reader["nama"].ToString()
                 });
             }
+        }
+
+        /* *** Image Processing *** */
+
+        /* Convert Image Path to ASCII */
+        public static string ConvertImageToAscii(string path){
+            using Image<Rgba32> image = LoadBitmap(path);
+            return ConvertToAscii(image);
+        }
+
+        /* Load Bitmap from Path */
+        private static Image<Rgba32> LoadBitmap(string path){
+            return Image.Load<Rgba32>(path);
+        }
+        
+        /* Convert Bipmap to ASCII */
+        public static string ConvertToAscii(Image<Rgba32> image){
+            if (image == null) return "";
+            StringBuilder sb = new();
+
+            image.Mutate(x => x.Resize(image.Width / 10, image.Height / 10));
+
+            for (int y = 0; y < image.Height; y++){
+                for (int x = 0; x < image.Width; x++){
+                    Rgba32 pixelColor = image[x, y];
+                    int grayScale = (int)((pixelColor.R * 0.299) + (pixelColor.G * 0.587) + (pixelColor.B * 0.114));
+                    char asciiChar = GetAsciiCharacter(grayScale);
+                    sb.Append(asciiChar);
+                }
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
+        }
+
+        /* Get ASCII Character */
+        private static char GetAsciiCharacter(int grayScale){
+            string asciiChars = "@%#*+=-:. ";
+            int index = (int)(grayScale / 255.0 * (asciiChars.Length - 1));
+            return asciiChars[index];
         }
     }
 }

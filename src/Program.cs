@@ -12,7 +12,7 @@ class Program
         DatabaseManager dbManager = new DatabaseManager(conn);
 
         // Membuat instance dari Data class
-        Data data = new(dbManager);
+        DataProcessor data = new(dbManager);
 
         // Menampilkan data biodata
         Console.WriteLine("Data Biodata:");
