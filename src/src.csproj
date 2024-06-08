@@ -12,11 +12,13 @@
   <ItemGroup>
     <PackageReference Include="Bogus" Version="35.5.1" />
     <PackageReference Include="MySql.Data" Version="8.4.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
     <PackageReference Include="System.Text.Json" Version="8.0.0" />
     <PackageReference Include="System.Resources.Extensions" Version="4.7.1" />
     <Compile Include="Program.cs" />
     <Compile Include="Database\DatabaseManager.cs" />
+    <Compile Include="Database\Data.cs" />
     <Compile Include="algo\KMP.cs" />
     <Compile Include="algo\BM.cs" />
     <Compile Include="algo\Similarity.cs" />

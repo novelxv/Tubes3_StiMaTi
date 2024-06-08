@@ -1,10 +1,34 @@
 ﻿using algo;
+using Database;
 
 class Program
 {
     static void Main(string[] args)
     {   
         Console.WriteLine("Fingerprint Matching Program"); 
+
+        // Konfigurasi DatabaseManager
+        string conn = "server=localhost;user=tubes3;database=tubes3;port=3306;password=stimati";
+        DatabaseManager dbManager = new DatabaseManager(conn);
+
+        // Membuat instance dari Data class
+        Data data = new(dbManager);
+
+        // Menampilkan data biodata
+        Console.WriteLine("Data Biodata:");
+        foreach (var biodata in data.BiodataList)
+        {
+            Console.WriteLine($"NIK: {biodata.NIK}, Nama: {biodata.Nama}, Tempat Lahir: {biodata.TempatLahir}, Tanggal Lahir: {biodata.TanggalLahir?.ToString("yyyy-MM-dd")}, Jenis Kelamin: {biodata.JenisKelamin}");
+        }
+
+        // Menampilkan data sidik jari
+        Console.WriteLine("\nData Sidik Jari:");
+        foreach (var sidikJari in data.SidikJariList)
+        {
+            Console.WriteLine($"Nama: {sidikJari.Nama}, Berkas Citra: {sidikJari.BerkasCitra}");
+        }
+
+
         // Contoh input sidik jari
         string inputFingerprint = "11001001"; // Mendefinisikan sidik jari input sebagai string
         List<string> databaseFingerprints = new List<string> // Mendefinisikan list sidik jari dalam database
