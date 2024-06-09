@@ -46,6 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <!-- Menambahkan semua file dari folder algo -->
+    <Compile Include="..\..\algo\**\*.cs" />
+    <!-- Menambahkan semua file dari folder Database -->
+    <Compile Include="..\..\Database\**\*.cs" />
+    <Compile Include="Initializer.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

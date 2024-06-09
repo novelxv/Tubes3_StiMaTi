@@ -8,10 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Database;
+using Algo;
+
 namespace Frontend
 {
     public partial class Form1 : Form
     {
+
+        public string ImageLocation { get; private set; }
         public Form1()
         {
             InitializeComponent();
@@ -21,7 +26,6 @@ namespace Frontend
 
         private void button1_Click(object sender, EventArgs e)
         {
-            String imageLocation = "";
             try
             {
                 OpenFileDialog dialog = new OpenFileDialog();
@@ -29,9 +33,8 @@ namespace Frontend
 
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    imageLocation = dialog.FileName;
-
-                    InputImage.ImageLocation = imageLocation;
+                    ImageLocation = dialog.FileName;
+                    InputImage.ImageLocation = ImageLocation;
                 }
             }
             catch (Exception)
@@ -43,13 +46,78 @@ namespace Frontend
         // Event handler untuk event Click
         private void KMP_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Tombol KMP ditekan!"); // Nanti lo masukin pemrosesan KMP di sini
+        // Tambahkan logika pemrosesan KMP di sini, menggunakan ImageLocation
+        if (!string.IsNullOrEmpty(ImageLocation))
+        {
+            List<string?> databaseFingerprints = DataProcessor.GetAllSidikJari().Where(s => s != null).ToList();
+            string? name;
+            double executionTime;
+            double bestMatchPercentage;
+            (name, executionTime, bestMatchPercentage) = FingerprintsProcessor.ProcessFingerprints(ImageLocation, databaseFingerprints, true);
+            if (name != null){
+                Biodata? biodata = BiodataProcessor.GetBiodata(name, DataProcessor.BiodataList);
+                if (biodata != null)
+                {
+                    UpdateBioPanelLabels(biodata.Name[0], biodata.TempatLahir, biodata.TanggalLahir, biodata.JenisKelamin, biodata.GolonganDarah, biodata.Alamat, biodata.Agama, biodata.StatusPerkawinan, biodata.Pekerjaan, biodata.Kewarganegaraan);
+                }
+            }
+            UpdateTempPanelLabels(executionTime, bestMatchPercentage);
+        }
         }
 
         // Event handler untuk event Click
         private void BM_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Tombol BM ditekan!"); // Nanti lo masukin pemrosesan BM di sini
+        // Tambahkan logika pemrosesan BM di sini, menggunakan ImageLocation
+        if (!string.IsNullOrEmpty(ImageLocation))
+        {
+            List<string?> databaseFingerprints = DataProcessor.GetAllSidikJari().Where(s => s != null).ToList();
+            string? name;
+            double executionTime;
+            double bestMatchPercentage;
+            (name, executionTime, bestMatchPercentage) = FingerprintsProcessor.ProcessFingerprints(ImageLocation, databaseFingerprints, false);
+            if (name != null){
+            Biodata? biodata = BiodataProcessor.GetBiodata(name, DataProcessor.BiodataList);
+                if (biodata != null)
+                {
+                    UpdateBioPanelLabels(biodata.Nama[0], biodata.TempatLahir, biodata.TanggalLahir, biodata.JenisKelamin, biodata.GolonganDarah, biodata.Alamat, biodata.Agama, biodata.StatusPerkawinan, biodata.Pekerjaan, biodata.Kewarganegaraan);
+                }
+            }
+            UpdateTempPanelLabels(executionTime, bestMatchPercentage);
+        }
+        }
+
+        private void FingerprintForm_Load(object sender, EventArgs e)
+        {
+            Console.WriteLine("Fingerprint Matching Program");
+
+            // Konfigurasi DatabaseManager
+            string conn = "server=localhost;user=tubes3;database=tubes3;port=3306;password=stimati";
+            DatabaseManager dbManager = new(conn);
+
+            // Inisialisasi DataProcessor dengan DatabaseManager
+            DataProcessor.Initialize(dbManager);
+        }
+
+        private void UpdateBioPanelLabels(string nama, string tempatLahir, string tanggalLahir, string jenisKelamin, string golonganDarah, string alamat, string agama, string statusPerkawinan, string pekerjaan, string kewarganegaraan)
+        {
+
+            labelNama.Text = $"Nama: {nama}";
+            labelTempatLahir.Text = $"Tempat Lahir: {tempatLahir}";
+            labelTanggalLahir.Text = $"Tanggal Lahir: {tanggalLahir}";
+            labelJenisKelamin.Text = $"Jenis Kelamin: {jenisKelamin}";
+            labelGolonganDarah.Text = $"Golongan Darah: {golonganDarah}";
+            labelAlamat.Text = $"Alamat: {alamat}";
+            labelAgama.Text = $"Agama: {agama}";
+            labelStatusPerkawinan.Text = $"Status Perkawinan: {statusPerkawinan}";
+            labelPekerjaan.Text = $"Pekerjaan: {pekerjaan}";
+            labelKewarganegaraan.Text = $"Kewarganegaraan: {kewarganegaraan}";
+        }
+
+        private void UpdateTempPanelLabels(string waktuPencarian, string persentaseKecocokan)
+        {
+            labelWaktuPencarian.Text = $"{waktuPencarian} ms";
+            labelPersentaseKecocokan.Text = $"{persentaseKecocokan}%";
         }
     }
 }
