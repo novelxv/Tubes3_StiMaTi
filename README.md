@@ -57,7 +57,7 @@ dotnet run
 
 ## Program Display
 ![](src/Frontend/Frontend/img/bg_blocking.png)
-![](assets/pic2.png)
+![](assets/pic.png)
 
 ## Author Information
 

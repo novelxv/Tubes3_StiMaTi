@@ -18,7 +18,7 @@ class Program
         Console.WriteLine("\nData Sidik Jari:");
         List<string?> sidikJari = DataProcessor.GetAllSidikJari();
 
-        string inputFingerprintImagePath = "..\\test\\test.BMP";
+        string inputFingerprintImagePath = "..\\test\\1__M_Left_index_finger.BMP";
         List<string?> databaseFingerprints = DataProcessor.GetAllSidikJari().Where(s => s != null).ToList();
         string? name;
         double executionTime;
@@ -28,7 +28,7 @@ class Program
 
         if (name != null){
             Biodata? biodata = BiodataProcessor.GetBiodata(name, DataProcessor.BiodataList);
-            Console.WriteLine($"NIK: {biodata.NIK}, Nama: {biodata.Nama[0]}");
+            Console.WriteLine($"NIK: {biodata.NIK}\nNama: {biodata.Nama[0]}\nTempat Lahir: {biodata.TempatLahir}\nTanggal Lahir: {biodata.TanggalLahir}\nJenis Kelamin: {biodata.JenisKelamin}\nAgama: {biodata.Agama}\nGolongan Darah: {biodata.GolonganDarah}\nStatus Perkawinan: {biodata.StatusPerkawinan}\nAlamat: {biodata.Alamat}\nPekerjaan: {biodata.Pekerjaan}\nKewarganegaraan: {biodata.Kewarganegaraan}");
         }
     }
 }
