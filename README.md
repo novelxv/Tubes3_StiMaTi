@@ -8,6 +8,7 @@ Tugas Besar 3 Mata Kuliah IF2211 Strategi Algoritma 2024 - Pemanfaatan Pattern M
 - [Description](#description)
 - [Requirements and Installation](#requirements-and-installation)
 - [How to Run](#how-to-run)
+- [Features](#features)
 - [Program Display](#program-display)
 - [Author Information](#author-information)
 
@@ -36,7 +37,7 @@ dotnet restore
 mariadb -u root -p
 CREATE DATABASE tubes3;
 CREATE USER 'tubes3'@'localhost' IDENTIFIED BY 'stimati';
-GRANT ALL PRIVILEGES ON tubes3. TO 'tubes3'@'localhost';
+GRANT ALL PRIVILEGES ON tubes3.* TO 'tubes3'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 cd src/Database
@@ -50,9 +51,12 @@ cd src
 dotnet run
 ```
 
-## Program Display
+## Features
+- Pattern matching for biometric identification
+- Easy to use with a GUI for interacting with the system.
 
-![](assets/pic1.png)
+## Program Display
+![](src/Frontend/Frontend/img/bg_blocking.png)
 ![](assets/pic2.png)
 
 ## Author Information
