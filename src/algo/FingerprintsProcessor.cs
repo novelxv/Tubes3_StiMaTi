@@ -18,26 +18,23 @@ namespace algo {
             // segment input image
             List<string> inputSegments = SegmentImage(inputFingerprintImagePath, 30);
 
-            foreach (var dbFingerprintPath in databaseFingerprints){
-                string dbAscii = DataProcessor.ConvertImageToAscii(dbFingerprintPath);
-
-                double matchPercentage = CompareSegments(inputSegments, dbAscii, useKmp);
+            foreach (var dbFingerprint in databaseFingerprints){
+                double matchPercentage = CompareSegments(inputSegments, dbFingerprint, useKmp);
                 
                 if (matchPercentage > bestMatchPercentage){
-                    bestMatchFingerprint = dbFingerprintPath;
+                    bestMatchFingerprint = dbFingerprint;
                     bestMatchPercentage = matchPercentage;
                 }
             }
 
             // jika tidak ditemukan match dengan KMP atau BM
             if (bestMatchFingerprint == null){
-                foreach (var dbFingerprintPath in databaseFingerprints){
-                    string dbAscii = DataProcessor.ConvertImageToAscii(dbFingerprintPath);
+                foreach (var dbFingerprint in databaseFingerprints){
                     string inputAscii = DataProcessor.ConvertImageToAscii(inputFingerprintImagePath);
-                    double matchPercentage = Levenshtein.ComputeSimilarity(inputAscii, dbAscii);
+                    double matchPercentage = Levenshtein.ComputeSimilarity(inputAscii, dbFingerprint);
 
                     if (matchPercentage > bestMatchPercentage && matchPercentage >= 70.0){
-                        bestMatchFingerprint = dbFingerprintPath;
+                        bestMatchFingerprint = dbFingerprint;
                         bestMatchPercentage = matchPercentage;
                     }
                 }
@@ -58,7 +55,7 @@ namespace algo {
         /* function to segment image */
         private static List<string> SegmentImage(string inputFingerprintImagePath, int segmentSize){
             Image<Rgba32> image = DataProcessor.LoadBitmap(inputFingerprintImagePath);
-            List<string> segments = new();
+            List<string> segments = [];
 
             for (int i = 0; i < image.Width; i += segmentSize){
                 int width = Math.Min(segmentSize, image.Width - i);

@@ -15,55 +15,32 @@ class Program
         DataProcessor data = new(dbManager);
 
         // Menampilkan data biodata
-        Console.WriteLine("Data Biodata:");
-        foreach (var biodata in data.BiodataList)
-        {
-            Console.WriteLine($"NIK: {biodata.NIK}, Nama: {biodata.Nama}, Tempat Lahir: {biodata.TempatLahir}, Tanggal Lahir: {biodata.TanggalLahir?.ToString("yyyy-MM-dd")}, Jenis Kelamin: {biodata.JenisKelamin}");
-        }
+        // Console.WriteLine("Data Biodata:");
+        // foreach (var biodata in data.BiodataList)
+        // {
+        //     Console.WriteLine($"NIK: {biodata.NIK}, Nama: {biodata.Nama}, Tempat Lahir: {biodata.TempatLahir}, Tanggal Lahir: {biodata.TanggalLahir?.ToString("yyyy-MM-dd")}, Jenis Kelamin: {biodata.JenisKelamin}");
+        // }
 
         // Menampilkan data sidik jari
         Console.WriteLine("\nData Sidik Jari:");
-        foreach (var sidikJari in data.SidikJariList)
-        {
-            // Console.WriteLine($"Nama: {sidikJari.Nama}, Berkas Citra: {sidikJari.BerkasCitra}");
-        }
-
-
-        // Contoh input sidik jari
-        string inputFingerprint = "11001001"; // Mendefinisikan sidik jari input sebagai string
-        List<string> databaseFingerprints = new List<string> // Mendefinisikan list sidik jari dalam database
-        {
-            "11001010",
-            "1298372180011093712110010008789707897987",
-            "11001001",
-            "01010101"
-        };
-
-        // Pencarian dengan KMP dan Boyer-Moore
-        // bool matchFound = false; // Inisialisasi variabel untuk menyimpan status kecocokan
-        foreach (var dbFingerprint in databaseFingerprints) // Loop melalui setiap sidik jari dalam database
-        {
-            if (BoyerMoore.BMMatch(inputFingerprint, dbFingerprint)) // Memeriksa kecocokan menggunakan algoritma KMP atau Boyer-Moore
-            {
-                Console.WriteLine("Exact match found with fingerprint: " + dbFingerprint); // Mencetak pesan jika ditemukan kecocokan
-                // matchFound = true; // Mengatur variabel status kecocokan menjadi true
-                break; // Keluar dari loop setelah menemukan kecocokan
-            }
-        }
-
-        // if (!matchFound) // Jika tidak ditemukan kecocokan
+        // foreach (var sidikJari in data.SidikJariList)
         // {
-        //     // Menghitung kemiripan menggunakan Hamming Distance
-        //     int threshold = 75; // Nilai threshold dalam persen
-        //     string mostSimilarFingerprint = Similarity.FindMostSim(inputFingerprint, databaseFingerprints, threshold); // Mencari sidik jari yang paling mirip
-        //     if (mostSimilarFingerprint != null) // Jika ditemukan sidik jari yang mirip
-        //     {
-        //         Console.WriteLine("Most similar fingerprint: " + mostSimilarFingerprint); // Mencetak pesan sidik jari yang paling mirip
-        //     }
-        //     else
-        //     {
-        //         Console.WriteLine("No similar fingerprint found above threshold."); // Mencetak pesan jika tidak ada sidik jari yang mirip
-        //     }
+        //     Console.WriteLine($"Nama: {sidikJari.Nama}, Berkas Citra: {sidikJari.BerkasCitra}");
         // }
+        List<string?> sidikJari = data.GetAllSidikJari();
+        // foreach (var sidik in sidikJari)
+        // {
+        //     Console.WriteLine(sidik);
+        // }
+
+        string inputFingerprintImagePath = "..\\test\\1__M_Left_index_finger.BMP";
+        List<string?> databaseFingerprints = data.GetAllSidikJari().Where(s => s != null).ToList();
+        string? bestMatchFingerprint;
+        double executionTime;
+        double bestMatchPercentage;
+        (bestMatchFingerprint, executionTime, bestMatchPercentage) = FingerprintsProcessor.ProcessFingerprints(inputFingerprintImagePath, databaseFingerprints, false);
+        Console.WriteLine($"Best Match Fingerprint: {bestMatchFingerprint}, Execution Time: {executionTime}, Best Match Percentage: {bestMatchPercentage}");
+        string? name = data.GetNamaFromSidikJari(bestMatchFingerprint);
+        Console.WriteLine($"Best Match Name: {name}");
     }
 }
