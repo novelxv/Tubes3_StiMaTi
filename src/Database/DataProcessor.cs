@@ -1,12 +1,9 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using MySql.Data.MySqlClient;
-using Image = SixLabors.ImageSharp.Image;
 using System.Text;
 using SixLabors.ImageSharp.Processing;
-using System.Linq.Expressions;
 using System.Text.RegularExpressions;
-using System.Globalization;
 
 namespace Database {
     /* Biodata */
@@ -92,14 +89,14 @@ namespace Database {
         /* *** Image Processing *** */
 
         /* Convert Image Path to ASCII */
-        public static string ConvertImageToAscii(string path){
+        public static string ConvertImageToAscii(string? path){
             if (path == null) return "";
             using Image<Rgba32> image = LoadBitmap(path);
             return ConvertToAscii(image);
         }
 
         /* Load Bitmap from Path */
-        private static Image<Rgba32> LoadBitmap(string path){
+        public static Image<Rgba32> LoadBitmap(string path){
             return Image.Load<Rgba32>(path);
         }
         
@@ -133,7 +130,7 @@ namespace Database {
         /* *** Text Processing *** */
 
         /* Convert Alay to Normal */
-        public static List<string>? ConvertAlayToNormal(string alayText){
+        public static List<string>? ConvertAlayToNormal(string? alayText){
             var results = new List<string>();
             if (alayText == null) return results;
             // handle penggunaan angka

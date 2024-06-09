@@ -26,7 +26,8 @@
     <Compile Include="Database\DataProcessor.cs" />
     <Compile Include="algo\KMP.cs" />
     <Compile Include="algo\BM.cs" />
-    <Compile Include="algo\Similarity.cs" />
+    <Compile Include="algo\Levenshtein.cs" />
+    <Compile Include="algo\FingerprintsProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Frontend\Frontend\Properties\Settings.settings">
