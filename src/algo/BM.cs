@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace algo {
     public static class BoyerMoore {
         /* finds if the pattern is found in the text using the Boyer-Moore algorithm */

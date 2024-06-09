@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Database;
-using Algo;
+using algo;
 
 namespace Frontend
 {
@@ -58,10 +58,15 @@ namespace Frontend
                 Biodata? biodata = BiodataProcessor.GetBiodata(name, DataProcessor.BiodataList);
                 if (biodata != null)
                 {
-                    UpdateBioPanelLabels(biodata.Name[0], biodata.TempatLahir, biodata.TanggalLahir, biodata.JenisKelamin, biodata.GolonganDarah, biodata.Alamat, biodata.Agama, biodata.StatusPerkawinan, biodata.Pekerjaan, biodata.Kewarganegaraan);
+                    // convert TanggalLahir DateTime to string
+                    string tanggalLahirString = biodata.TanggalLahir.ToString();
+                    UpdateBioPanelLabels(biodata.Nama[0], biodata.TempatLahir, tanggalLahirString, biodata.JenisKelamin, biodata.GolonganDarah, biodata.Alamat, biodata.Agama, biodata.StatusPerkawinan, biodata.Pekerjaan, biodata.Kewarganegaraan);
                 }
             }
-            UpdateTempPanelLabels(executionTime, bestMatchPercentage);
+            // convert executionTime to string
+            string executionTimeString = executionTime.ToString();
+            string bestMatchPercentageString = bestMatchPercentage.ToString();
+            UpdateTempPanelLabels(executionTimeString, bestMatchPercentageString);
         }
         }
 
@@ -80,10 +85,15 @@ namespace Frontend
             Biodata? biodata = BiodataProcessor.GetBiodata(name, DataProcessor.BiodataList);
                 if (biodata != null)
                 {
-                    UpdateBioPanelLabels(biodata.Nama[0], biodata.TempatLahir, biodata.TanggalLahir, biodata.JenisKelamin, biodata.GolonganDarah, biodata.Alamat, biodata.Agama, biodata.StatusPerkawinan, biodata.Pekerjaan, biodata.Kewarganegaraan);
+                    // convert TanggalLahir DateTime to string
+                    string tanggalLahirString = biodata.TanggalLahir.ToString();
+                    UpdateBioPanelLabels(biodata.Nama[0], biodata.TempatLahir, tanggalLahirString, biodata.JenisKelamin, biodata.GolonganDarah, biodata.Alamat, biodata.Agama, biodata.StatusPerkawinan, biodata.Pekerjaan, biodata.Kewarganegaraan);
                 }
             }
-            UpdateTempPanelLabels(executionTime, bestMatchPercentage);
+            // convert executionTime to string
+            string executionTimeString = executionTime.ToString();
+            string bestMatchPercentageString = bestMatchPercentage.ToString();
+            UpdateTempPanelLabels(executionTimeString, bestMatchPercentageString);
         }
         }
 

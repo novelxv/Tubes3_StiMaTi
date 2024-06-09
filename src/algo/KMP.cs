@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 namespace algo {
     public static class KMP {
         /* finds if the pattern is found in the text using KMP algorithm */

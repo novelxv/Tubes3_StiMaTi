@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Bogus;
 using MySql.Data.MySqlClient;
 using System.Text;

@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace algo {
     public static class Levenshtein {
         /* function to compute distance between two strings with levenshtein algorithm */
