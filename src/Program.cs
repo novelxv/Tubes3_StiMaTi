@@ -18,7 +18,7 @@ class Program
         Console.WriteLine("\nData Sidik Jari:");
         List<string?> sidikJari = DataProcessor.GetAllSidikJari();
 
-        string inputFingerprintImagePath = "..\\test\\1__M_Left_index_finger.BMP";
+        string inputFingerprintImagePath = "..\\test\\4__M_Left_index_finger.BMP";
         List<string?> databaseFingerprints = DataProcessor.GetAllSidikJari().Where(s => s != null).ToList();
         string? name;
         double executionTime;
@@ -26,7 +26,9 @@ class Program
         (name, executionTime, bestMatchPercentage) = FingerprintsProcessor.ProcessFingerprints(inputFingerprintImagePath, databaseFingerprints, false);
         Console.WriteLine($"Best Match Fingerprint: {name}, Execution Time: {executionTime}, Best Match Percentage: {bestMatchPercentage}");
 
-        Biodata? biodata = BiodataProcessor.GetBiodata(name, DataProcessor.BiodataList);
-        Console.WriteLine($"NIK: {biodata.NIK}, Nama: {biodata.Nama[0]}");
+        if (name != null){
+            Biodata? biodata = BiodataProcessor.GetBiodata(name, DataProcessor.BiodataList);
+            Console.WriteLine($"NIK: {biodata.NIK}, Nama: {biodata.Nama[0]}");
+        }
     }
 }
