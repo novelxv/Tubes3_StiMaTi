@@ -16,6 +16,11 @@
     <PackageReference Include="System.Drawing.Common" Version="8.0.6" />
     <PackageReference Include="System.Text.Json" Version="8.0.0" />
     <PackageReference Include="System.Resources.Extensions" Version="4.7.1" />
+    <Compile Include="Frontend\Frontend\Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Database\DatabaseManager.cs" />
     <Compile Include="Database\DataProcessor.cs" />
@@ -23,5 +28,10 @@
     <Compile Include="algo\BM.cs" />
     <Compile Include="algo\Similarity.cs" />
   </ItemGroup>
-
+  <ItemGroup>
+    <None Update="Frontend\Frontend\Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
 </Project>

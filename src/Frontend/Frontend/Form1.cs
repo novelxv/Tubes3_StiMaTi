@@ -15,6 +15,8 @@ namespace Frontend
         public Form1()
         {
             InitializeComponent();
+            bioPanel.BackColor = Color.FromArgb(0, Color.Black);
+            tempPanel.BackColor = Color.FromArgb(0, Color.Black);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -36,6 +38,18 @@ namespace Frontend
             {
                 MessageBox.Show("An Error Occured", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // Event handler untuk event Click
+        private void KMP_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Tombol KMP ditekan!"); // Nanti lo masukin pemrosesan KMP di sini
+        }
+
+        // Event handler untuk event Click
+        private void BM_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Tombol BM ditekan!"); // Nanti lo masukin pemrosesan BM di sini
         }
     }
 }

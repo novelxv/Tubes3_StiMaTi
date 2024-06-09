@@ -79,5 +79,22 @@ namespace Frontend.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+
+        internal static System.Drawing.Bitmap kmp {
+            get
+            {
+                object obj = ResourceManager.GetObject("kmp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        internal static System.Drawing.Bitmap bm
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("bm", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }
