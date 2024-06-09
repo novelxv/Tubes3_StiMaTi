@@ -12,7 +12,20 @@ namespace algo {
                     return biodata;
                 }
             }
-            return null;
+
+            // if no exact match, use Levenshtein
+            double maxSimilarity = 0;
+            Biodata? bestMatch = null;
+            foreach (var biodata in biodatas){
+                double similarity = UseLevenshtein(name, biodata.Nama);
+                if (similarity > maxSimilarity){
+                    maxSimilarity = similarity;
+                    bestMatch = biodata;
+                    bestMatch.Nama = [name];
+                }
+            }
+
+            return maxSimilarity > 30.0 ? bestMatch : null;
         }
 
         /* Check if name is a match */
@@ -35,16 +48,20 @@ namespace algo {
                 }
             }
 
-            // approximate match using Levenshtein
-            const double threshold = 0.8;
+            return false;
+        }
+
+        /* Use Levenshtein */
+        private static double UseLevenshtein(string name, List<string> names){
+            // return highest similarity
+            double maxSimilarity = 0;
             foreach (var n in names){
                 double similarity = Levenshtein.ComputeSimilarity(name, n);
-                if (similarity >= threshold){
-                    return true;
+                if (similarity > maxSimilarity){
+                    maxSimilarity = similarity;
                 }
             }
-
-            return false;
+            return maxSimilarity;
         }
     }
 }
