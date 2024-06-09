@@ -29,27 +29,25 @@ namespace Database {
     }
 
     /* Data Processor */
-    public class DataProcessor {
-        public List<Biodata> BiodataList { get; set; }
-        public List<SidikJari> SidikJariList { get; set; }
-        private readonly DatabaseManager _dbManager;
+    public static class DataProcessor {
+        public static List<Biodata> BiodataList { get; set; } = new List<Biodata>();
+        public static List<SidikJari> SidikJariList { get; set; } = new List<SidikJari>();
+        private static DatabaseManager _dbManager;
 
-        /* Constructor */
-        public DataProcessor(DatabaseManager manager){
+        /* Initialize */
+        public static void Initialize(DatabaseManager manager){
             _dbManager = manager;
-            BiodataList = [];
-            SidikJariList = [];
             LoadData();
         }
 
         /* Load Data */
-        private void LoadData(){
+        private static void LoadData(){
             LoadBiodata();
             LoadSidikJari();
         }
 
         /* Load Biodata */
-        private void LoadBiodata(){
+        private static void LoadBiodata(){
             string query = "SELECT * FROM biodata";
             using MySqlConnection conn = new(_dbManager.GetConnectionString());
             MySqlCommand cmd = new(query, conn);
@@ -73,7 +71,7 @@ namespace Database {
         }
 
         /* Load Sidik Jari */
-        private void LoadSidikJari(){
+        private static void LoadSidikJari(){
             string query = "SELECT * FROM sidik_jari";
             using MySqlConnection conn = new(_dbManager.GetConnectionString());
             MySqlCommand cmd = new(query, conn);
@@ -222,12 +220,12 @@ namespace Database {
         /* *** Get Data *** */
 
         /* Get Nama from Sidik Jari */
-        public string? GetNamaFromSidikJari(string berkasCitra){
+        public static string? GetNamaFromSidikJari(string berkasCitra){
             return SidikJariList.Find(s => s.BerkasCitra == berkasCitra)?.Nama;
         }
 
         /* Get All Sidik Jari ASCII */
-        public List<string?> GetAllSidikJari(){
+        public static List<string?> GetAllSidikJari(){
             return SidikJariList.Select(s => s.BerkasCitra).ToList();
         }
     }
