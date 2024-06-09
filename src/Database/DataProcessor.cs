@@ -4,6 +4,7 @@ using MySql.Data.MySqlClient;
 using System.Text;
 using SixLabors.ImageSharp.Processing;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace Database {
     /* Biodata */
@@ -130,7 +131,7 @@ namespace Database {
         /* *** Text Processing *** */
 
         /* Convert Alay to Normal */
-        public static List<string> ConvertAlayToNormal(string alayText)
+        public static List<string> ConvertAlayToNormal(string? alayText)
         {
             var results = new List<string>();
             if (alayText == null) return results;
@@ -155,15 +156,16 @@ namespace Database {
             {
                 normalText = Regex.Replace(normalText, pattern, replacement, RegexOptions.IgnoreCase);
             }
-
-            normalText = normalText.ToLower();
+            // to title case
+            normalText = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(normalText);
             results.Add(normalText);
 
             string regexPattern = @"[a-z][aiueo]{0,2}([^aiueo][aiueo]{0,2}[^aiueo])+[aiueo]{0,2}";
             
             string consonantPattern1 = @"^[^aiueo]*$";
             string consonantPattern2 = @"^[aiueo][^aiueo]+$";
-
+            
+            normalText = normalText.ToLower();
             if (Regex.IsMatch(normalText, consonantPattern1) || Regex.IsMatch(normalText, consonantPattern2))
             {
                 string[] parts = normalText.Split(' ');
@@ -173,7 +175,6 @@ namespace Database {
                     results = GeneratePossibleNames(parts[0], regexPattern);
                 }
             }
-            Console.WriteLine(results.Count);
             return results;
         }
 
@@ -194,6 +195,7 @@ namespace Database {
                 {
                     if (regex.IsMatch(current))
                     {
+                        current = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(current);
                         results.Add(current);
                     }
                     continue;
@@ -215,6 +217,18 @@ namespace Database {
             }
 
             return results;
+        }
+
+        /* *** Get Data *** */
+
+        /* Get Nama from Sidik Jari */
+        public string? GetNamaFromSidikJari(string berkasCitra){
+            return SidikJariList.Find(s => s.BerkasCitra == berkasCitra)?.Nama;
+        }
+
+        /* Get All Sidik Jari ASCII */
+        public List<string?> GetAllSidikJari(){
+            return SidikJariList.Select(s => s.BerkasCitra).ToList();
         }
     }
 }

@@ -9,7 +9,7 @@ class Program
 
         // Konfigurasi DatabaseManager
         string conn = "server=localhost;user=tubes3;database=tubes3;port=3306;password=stimati";
-        DatabaseManager dbManager = new DatabaseManager(conn);
+        DatabaseManager dbManager = new(conn);
 
         // Membuat instance dari Data class
         DataProcessor data = new(dbManager);
