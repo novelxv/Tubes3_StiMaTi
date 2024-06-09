@@ -12,7 +12,7 @@ namespace Database {
     /* Biodata */
     public class Biodata {
         public string? NIK { get; set; }
-        public string? Nama { get; set; }
+        public List<string>? Nama { get; set; }
         public string? TempatLahir { get; set; }
         public DateTime? TanggalLahir { get; set; }
         public string? JenisKelamin { get; set; }
@@ -133,8 +133,9 @@ namespace Database {
         /* *** Text Processing *** */
 
         /* Convert Alay to Normal */
-        public static string ConvertAlayToNormal(string alayText){
-            if (alayText == null) return "";
+        public static List<string>? ConvertAlayToNormal(string alayText){
+            var results = new List<string>();
+            if (alayText == null) return results;
             // handle penggunaan angka
             var replacements = new (string pattern, string replacement)[]{
                 (@"4", "a"), // 4 -> a
@@ -154,68 +155,56 @@ namespace Database {
             }
             normalText = normalText.ToLower();
             
-            // handle penyingkatan
-            var abbrevations = new (string pattern, string replacement)[]{
-                // abbreviations for first names
-                (@"\bEmp\b", "Empluk"),  // Emp -> Empluk
-                (@"\bInd\b", "Indra"),  // Ind -> Indra
-                (@"\bRat\b", "Ratna"),  // Rat -> Ratna
-                (@"\bNar\b", "Nardi"),  // Nar -> Nardi
-                (@"\bCin\b", "Cinthia"),  // Cin -> Cinthia
-                (@"\bNas\b", "Nasir"),  // Nas -> Nasir
-                (@"\bGam\b", "Gamani"),  // Gam -> Gamani
-                (@"\bHer\b", "Heryanto"),  // Her -> Heryanto
-                (@"\bJan\b", "Januar"),  // Jan -> Januar
-                (@"\bLas\b", "Lasmono"),  // Las -> Lasmono
-                (@"\bSaf\b", "Safitri"),  // Saf -> Safitri
-                (@"\bKui\b", "Kunthara"),  // Kui -> Kunthara
-                (@"\bDar\b", "Darma"),  // Dar -> Darma
-                (@"\bMuH\b", "Muhammad"),  // MuH -> Muhammad
-                (@"\bRai\b", "Raisa"),  // Rai -> Raisa
-                (@"\bSar\b", "Sari"),  // Sar -> Sari
-                (@"\bCin\b", "Cinthia"),  // Cin -> Cinthia
-                (@"\bMaR\b", "Maria"),  // MaR -> Maria
-                (@"\bWiNdA\b", "Winda"),  // WiNdA -> Winda
-                (@"\bV3r0\b", "Vero"),  // V3r0 -> Vero
-                (@"\bYuL14\b", "Yulia"),  // YuL14 -> Yulia
-                (@"\bKuNtHaRa\b", "Kunthara"),  // KuNtHaRa -> Kunthara
-                (@"\b4m4\b", "Amalia"),  // 4m4 -> Amalia
-                (@"\bPuPut\b", "Puput"),  // PuPut -> Puput
-                (@"\bWiNDa\b", "Winda"),  // WiNDa -> Winda
-                (@"\bNaRdI\b", "Nardi"),  // NaRdI -> Nardi
-                (@"\bNaS\b", "Nasir"),  // NaS -> Nasir
-                // abbreviations for last names
-                (@"\bSuw\b", "Suwandi"),  // Suw -> Suwandi
-                (@"\bRah\b", "Rahman"),  // Rah -> Rahman
-                (@"\bYul\b", "Yulianto"),  // Yul -> Yulianto
-                (@"\bLat\b", "Latif"),  // Lat -> Latif
-                (@"\bTha\b", "Thamrin"),  // Tha -> Thamrin
-                (@"\bPra\b", "Prasetyo"),  // Pra -> Prasetyo
-                (@"\bSim\b", "Simanjuntak"),  // Sim -> Simanjuntak
-                (@"\bNur\b", "Nurhadi"),  // Nur -> Nurhadi
-                (@"\bDam\b", "Damanik"),  // Dam -> Damanik
-                (@"\bBud\b", "Budiman"),  // Bud -> Budiman
-                (@"\bSul\b", "Sulistyo"),  // Sul -> Sulistyo
-                (@"\bWan\b", "Wandira"),  // Wan -> Wandira
-                (@"\bWir\b", "Wirawan"),  // Wir -> Wirawan
-                (@"\bPut\b", "Putri"),  // Put -> Putri
-                (@"\bMal\b", "Mala"),  // Mal -> Mala
-                (@"\bHid\b", "Hidayat"),  // Hid -> Hidayat
-                (@"\bRam\b", "Ramadhan"),  // Ram -> Ramadhan
-                (@"\bNab\b", "Nababan"),  // Nab -> Nababan
-                (@"\bKal\b", "Kalim"),  // Kal -> Kalim
-                (@"\bSid\b", "Sidharta"),  // Sid -> Sidharta
-                (@"\bKus\b", "Kuswandi"),  // Kus -> Kuswandi
-                (@"\bMan\b", "Mangunsong")  // Man -> Mangunsong
-            };
-            foreach (var (pattern, replacement) in abbrevations){
-                normalText = Regex.Replace(normalText, pattern, replacement, RegexOptions.IgnoreCase);
+            results.Add(normalText);
+
+
+            // Regex untuk semua kemungkinan hasil dari nama yang disingkat
+            string regexPattern = @"[a-z][aiueo]{0,2}([^aiueo][aiueo]{0,2}[^aiueo])+[aiueo]{0,2}";
+
+            if (Regex.IsMatch(normalText, @"[^aiueo]+")) {
+                string[] parts = normalText.Split(' ');
+                results.Clear();
+                results = GeneratePossibleNames(parts[0], regexPattern);
+            }
+    
+            return results;
+            }
+    
+        private static List<string> GeneratePossibleNames(string word, string pattern)
+        {
+            var results = new List<string>();
+            var regex = new Regex(pattern, RegexOptions.IgnoreCase);
+            var vowels = "aiueo".ToCharArray();
+
+            var queue = new Queue<(string current, int index)>();
+            queue.Enqueue((string.Empty, 0));
+
+            while (queue.Count > 0)
+            {
+                var (current, index) = queue.Dequeue();
+
+                if (index >= word.Length)
+                {
+                    if (regex.IsMatch(current))
+                    {
+                        results.Add(current);
+                    }
+                    continue;
+                }
+
+                queue.Enqueue((current + word[index], index + 1));
+
+                foreach (var v1 in vowels)
+                {
+                    queue.Enqueue((current + word[index] + v1, index + 1));
+                    foreach (var v2 in vowels)
+                    {
+                        queue.Enqueue((current + word[index] + v1 + v2, index + 1));
+                    }
+                }
             }
 
-            // handle kombinasi huruf besar-kecil
-            normalText = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(normalText);
-            return normalText;
+            return results;
         }
-
     }
 }
