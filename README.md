@@ -47,7 +47,7 @@ mysqldump -u tubes3 -p tubes3 > tubes3_stima24.sql
 ## How to Run
 To run the program, open a terminal or command prompt, navigate to the directory where the program file is saved, and run the following command:
 ```
-cd src
+cd src/Frontend/Frontend
 dotnet run
 ```
 
