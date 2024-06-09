@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System.Text;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using System.Text.RegularExpressions;
 
 namespace Database
 {
@@ -95,7 +96,7 @@ namespace Database
             }
         }
 
-        private string ConvertImageToAscii(string imagePath)
+        private static string ConvertImageToAscii(string imagePath)
         {
             if (!File.Exists(imagePath))
             {
@@ -131,7 +132,7 @@ namespace Database
             }
         }
 
-        private void InsertSidikJariData(MySqlConnection conn, string nama, string berkasCitra)
+        private static void InsertSidikJariData(MySqlConnection conn, string nama, string berkasCitra)
         {
             string query = "INSERT INTO sidik_jari (nama, berkas_citra) VALUES (@nama, @berkasCitra)";
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -142,7 +143,7 @@ namespace Database
             }
         }
 
-        private List<string> GetNamesFromSidikJari(MySqlConnection conn)
+        private static List<string> GetNamesFromSidikJari(MySqlConnection conn)
         {
             string query = "SELECT nama FROM sidik_jari";
             List<string> names = new List<string>();
@@ -161,7 +162,7 @@ namespace Database
             return names;
         }
 
-        private void InsertBiodata(MySqlConnection conn, dynamic biodata)
+        private static void InsertBiodata(MySqlConnection conn, dynamic biodata)
         {
             string query = @"INSERT INTO biodata (NIK, nama, tempat_lahir, tanggal_lahir, jenis_kelamin, golongan_darah, alamat, agama, status_perkawinan, pekerjaan, kewarganegaraan) 
                             VALUES (@NIK, @Nama, @TempatLahir, @TanggalLahir, @JenisKelamin, @GolonganDarah, @Alamat, @Agama, @StatusPerkawinan, @Pekerjaan, @Kewarganegaraan)";
@@ -202,7 +203,7 @@ namespace Database
             }
         }
 
-        private string CombineCase(string input)
+        private static string CombineCase(string input)
         {
             StringBuilder sb = new StringBuilder();
             bool toUpper = true;
@@ -217,7 +218,7 @@ namespace Database
             return sb.ToString();
         }
 
-        private string UseNumbers(string input)
+        private static string UseNumbers(string input)
         {
             Dictionary<char, char> replacements = new Dictionary<char, char>
             {
@@ -231,33 +232,36 @@ namespace Database
             return sb.ToString();
         }
 
-        private string Shorten(string input)
+        private static string Shorten(string input)
         {
-            string[] words = input.Split(' ');
-            StringBuilder sb = new StringBuilder();
-            foreach (string word in words)
-            {
-                sb.Append(word.Length > 2 ? word.Substring(0, 3) : word);
-                sb.Append(" ");
+            Random random = new();
+            string pattern = "[aeieo]";
+            MatchCollection matches = Regex.Matches(input, pattern, RegexOptions.IgnoreCase);
+            int vowelsToRemove = random.Next(1, matches.Count + 1);
+            string shortenedWord = input;
+            for (int i = 0; i < vowelsToRemove; i++){
+                int indexToRemove = random.Next(0, matches.Count);
+                int vowelIndex = matches[indexToRemove].Index;
+                shortenedWord = shortenedWord.Remove(vowelIndex, 1);
+                matches = Regex.Matches(shortenedWord, pattern, RegexOptions.IgnoreCase);
             }
-
-            return sb.ToString().Trim();
+            return shortenedWord;
         }
 
-        private string CombineAll(string input)
+        private static string CombineAll(string input)
         {
             string combinedCase = CombineCase(input);
             string withNumbers = UseNumbers(combinedCase);
             return Shorten(withNumbers);
         }
 
-        private string FindImageWithPrefix(string directory, string prefix)
+        private static string FindImageWithPrefix(string directory, string prefix)
         {
             var files = Directory.GetFiles(directory, $"{prefix}*.bmp");
             return files.FirstOrDefault() ?? string.Empty;
         }
 
-        private List<string> FindImagesWithPrefix(string directory, string prefix)
+        private static List<string> FindImagesWithPrefix(string directory, string prefix)
         {
             var files = Directory.GetFiles(directory, $"{prefix}*.bmp").ToList();
             return files;
