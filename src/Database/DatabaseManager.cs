@@ -232,30 +232,30 @@ namespace Database
             return sb.ToString();
         }
 
-    private static string Shorten(string input)
-    {
-        Random random = new();
-        string pattern = "[aeiou]";
-        MatchCollection matches = Regex.Matches(input, pattern, RegexOptions.IgnoreCase);
-        int vowelsToRemove = random.Next(1, matches.Count + 1);
-        string shortenedWord = input;
-
-        for (int i = 0; i < vowelsToRemove; i++)
+        private static string Shorten(string input)
         {
-            if (matches.Count == 0)
-                break;
+            Random random = new();
+            string pattern = "[aeiou]";
+            MatchCollection matches = Regex.Matches(input, pattern, RegexOptions.IgnoreCase);
+            int vowelsToRemove = random.Next(1, matches.Count + 1);
+            string shortenedWord = input;
 
-            int indexToRemove = random.Next(0, matches.Count);
-            int vowelIndex = matches[indexToRemove].Index;
+            for (int i = 0; i < vowelsToRemove; i++)
+            {
+                if (matches.Count == 0)
+                    break;
 
-            shortenedWord = shortenedWord.Remove(vowelIndex, 1);
+                int indexToRemove = random.Next(0, matches.Count);
+                int vowelIndex = matches[indexToRemove].Index;
 
-            // Perbarui MatchCollection setelah penghapusan vokal
-            matches = Regex.Matches(shortenedWord, pattern, RegexOptions.IgnoreCase);
+                shortenedWord = shortenedWord.Remove(vowelIndex, 1);
+
+                // Perbarui MatchCollection setelah penghapusan vokal
+                matches = Regex.Matches(shortenedWord, pattern, RegexOptions.IgnoreCase);
+            }
+
+            return shortenedWord;
         }
-
-        return shortenedWord;
-    }
 
         private static string CombineAll(string input)
         {
