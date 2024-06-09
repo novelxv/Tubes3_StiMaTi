@@ -25,5 +25,8 @@ class Program
         double bestMatchPercentage;
         (name, executionTime, bestMatchPercentage) = FingerprintsProcessor.ProcessFingerprints(inputFingerprintImagePath, databaseFingerprints, false);
         Console.WriteLine($"Best Match Fingerprint: {name}, Execution Time: {executionTime}, Best Match Percentage: {bestMatchPercentage}");
+
+        Biodata? biodata = BiodataProcessor.GetBiodata(name, DataProcessor.BiodataList);
+        Console.WriteLine($"NIK: {biodata.NIK}, Nama: {biodata.Nama[0]}");
     }
 }

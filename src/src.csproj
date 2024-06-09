@@ -28,6 +28,7 @@
     <Compile Include="algo\BM.cs" />
     <Compile Include="algo\Levenshtein.cs" />
     <Compile Include="algo\FingerprintsProcessor.cs" />
+    <Compile Include="algo\BiodataProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Frontend\Frontend\Properties\Settings.settings">
