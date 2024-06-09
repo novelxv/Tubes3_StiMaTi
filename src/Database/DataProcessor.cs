@@ -130,11 +130,14 @@ namespace Database {
         /* *** Text Processing *** */
 
         /* Convert Alay to Normal */
-        public static List<string>? ConvertAlayToNormal(string? alayText){
+        public static List<string> ConvertAlayToNormal(string alayText)
+        {
             var results = new List<string>();
             if (alayText == null) return results;
-            // handle penggunaan angka
-            var replacements = new (string pattern, string replacement)[]{
+
+            // Handle penggunaan angka
+            var replacements = new (string pattern, string replacement)[]
+            {
                 (@"4", "a"), // 4 -> a
                 (@"3", "e"), // 3 -> e
                 (@"1", "i"), // 1 -> i
@@ -146,27 +149,34 @@ namespace Database {
                 (@"8", "b"), // 8 -> b
                 (@"9", "g")  // 9 -> g
             };
+
             string normalText = alayText;
-            foreach (var (pattern, replacement) in replacements){
+            foreach (var (pattern, replacement) in replacements)
+            {
                 normalText = Regex.Replace(normalText, pattern, replacement, RegexOptions.IgnoreCase);
             }
+
             normalText = normalText.ToLower();
-            
             results.Add(normalText);
 
-
-            // Regex untuk semua kemungkinan hasil dari nama yang disingkat
             string regexPattern = @"[a-z][aiueo]{0,2}([^aiueo][aiueo]{0,2}[^aiueo])+[aiueo]{0,2}";
+            
+            string consonantPattern1 = @"^[^aiueo]*$";
+            string consonantPattern2 = @"^[aiueo][^aiueo]+$";
 
-            if (Regex.IsMatch(normalText, @"[^aiueo]+")) {
+            if (Regex.IsMatch(normalText, consonantPattern1) || Regex.IsMatch(normalText, consonantPattern2))
+            {
                 string[] parts = normalText.Split(' ');
-                results.Clear();
-                results = GeneratePossibleNames(parts[0], regexPattern);
+                if (parts.Length > 0)
+                {
+                    results.Clear();
+                    results = GeneratePossibleNames(parts[0], regexPattern);
+                }
             }
-    
+            Console.WriteLine(results.Count);
             return results;
-            }
-    
+        }
+
         private static List<string> GeneratePossibleNames(string word, string pattern)
         {
             var results = new List<string>();
@@ -191,12 +201,15 @@ namespace Database {
 
                 queue.Enqueue((current + word[index], index + 1));
 
-                foreach (var v1 in vowels)
+                if ("aiueo".IndexOf(word[index]) == -1)
                 {
-                    queue.Enqueue((current + word[index] + v1, index + 1));
-                    foreach (var v2 in vowels)
+                    foreach (var v1 in vowels)
                     {
-                        queue.Enqueue((current + word[index] + v1 + v2, index + 1));
+                        queue.Enqueue((current + word[index] + v1, index + 1));
+                        foreach (var v2 in vowels)
+                        {
+                            queue.Enqueue((current + word[index] + v1 + v2, index + 1));
+                        }
                     }
                 }
             }
