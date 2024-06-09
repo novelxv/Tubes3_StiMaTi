@@ -15,13 +15,30 @@ namespace Frontend
 {
     public partial class Form1 : Form
     {
-
         public string ImageLocation { get; private set; }
+
         public Form1()
         {
             InitializeComponent();
             bioPanel.BackColor = Color.FromArgb(0, Color.Black);
             tempPanel.BackColor = Color.FromArgb(0, Color.Black);
+            InitializeFingerprintForm();
+        }
+
+        private void InitializeFingerprintForm()
+        {
+            Console.WriteLine("Fingerprint Matching Program");
+
+            try
+            {
+                string conn = "server=localhost;user=tubes3;database=tubes3;port=3306;password=stimati";
+                DatabaseManager dbManager = new(conn);
+                DataProcessor.Initialize(dbManager);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Database Connection Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -37,81 +54,76 @@ namespace Frontend
                     InputImage.ImageLocation = ImageLocation;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("An Error Occured", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"An Error Occured: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // Event handler untuk event Click
         private void KMP_Click(object sender, EventArgs e)
         {
-        // Tambahkan logika pemrosesan KMP di sini, menggunakan ImageLocation
-        if (!string.IsNullOrEmpty(ImageLocation))
-        {
-            List<string?> databaseFingerprints = DataProcessor.GetAllSidikJari().Where(s => s != null).ToList();
-            string? name;
-            double executionTime;
-            double bestMatchPercentage;
-            (name, executionTime, bestMatchPercentage) = FingerprintsProcessor.ProcessFingerprints(ImageLocation, databaseFingerprints, true);
-            if (name != null){
-                Biodata? biodata = BiodataProcessor.GetBiodata(name, DataProcessor.BiodataList);
-                if (biodata != null)
+            if (!string.IsNullOrEmpty(ImageLocation))
+            {
+                try
                 {
-                    // convert TanggalLahir DateTime to string
-                    string tanggalLahirString = biodata.TanggalLahir.ToString();
-                    UpdateBioPanelLabels(biodata.Nama[0], biodata.TempatLahir, tanggalLahirString, biodata.JenisKelamin, biodata.GolonganDarah, biodata.Alamat, biodata.Agama, biodata.StatusPerkawinan, biodata.Pekerjaan, biodata.Kewarganegaraan);
+                    List<string?> databaseFingerprints = DataProcessor.GetAllSidikJari().Where(s => s != null).ToList();
+                    string? name;
+                    double executionTime;
+                    double bestMatchPercentage;
+                    (name, executionTime, bestMatchPercentage) = FingerprintsProcessor.ProcessFingerprints(ImageLocation, databaseFingerprints, true);
+                    if (name != null)
+                    {
+                        Biodata? biodata = BiodataProcessor.GetBiodata(name, DataProcessor.BiodataList);
+                        if (biodata != null)
+                        {
+                            string tanggalLahirString = biodata.TanggalLahir.ToString();
+                            UpdateBioPanelLabels(biodata.Nama[0], biodata.TempatLahir, tanggalLahirString, biodata.JenisKelamin, biodata.GolonganDarah, biodata.Alamat, biodata.Agama, biodata.StatusPerkawinan, biodata.Pekerjaan, biodata.Kewarganegaraan);
+                        }
+                    }
+                    string executionTimeString = executionTime.ToString();
+                    string bestMatchPercentageString = bestMatchPercentage.ToString();
+                    UpdateTempPanelLabels(executionTimeString, bestMatchPercentageString);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An Error Occured: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            // convert executionTime to string
-            string executionTimeString = executionTime.ToString();
-            string bestMatchPercentageString = bestMatchPercentage.ToString();
-            UpdateTempPanelLabels(executionTimeString, bestMatchPercentageString);
-        }
         }
 
-        // Event handler untuk event Click
         private void BM_Click(object sender, EventArgs e)
         {
-        // Tambahkan logika pemrosesan BM di sini, menggunakan ImageLocation
-        if (!string.IsNullOrEmpty(ImageLocation))
-        {
-            List<string?> databaseFingerprints = DataProcessor.GetAllSidikJari().Where(s => s != null).ToList();
-            string? name;
-            double executionTime;
-            double bestMatchPercentage;
-            (name, executionTime, bestMatchPercentage) = FingerprintsProcessor.ProcessFingerprints(ImageLocation, databaseFingerprints, false);
-            if (name != null){
-            Biodata? biodata = BiodataProcessor.GetBiodata(name, DataProcessor.BiodataList);
-                if (biodata != null)
+            if (!string.IsNullOrEmpty(ImageLocation))
+            {
+                try
                 {
-                    // convert TanggalLahir DateTime to string
-                    string tanggalLahirString = biodata.TanggalLahir.ToString();
-                    UpdateBioPanelLabels(biodata.Nama[0], biodata.TempatLahir, tanggalLahirString, biodata.JenisKelamin, biodata.GolonganDarah, biodata.Alamat, biodata.Agama, biodata.StatusPerkawinan, biodata.Pekerjaan, biodata.Kewarganegaraan);
+                    List<string?> databaseFingerprints = DataProcessor.GetAllSidikJari().Where(s => s != null).ToList();
+                    string? name;
+                    double executionTime;
+                    double bestMatchPercentage;
+                    (name, executionTime, bestMatchPercentage) = FingerprintsProcessor.ProcessFingerprints(ImageLocation, databaseFingerprints, false);
+                    if (name != null)
+                    {
+                        Biodata? biodata = BiodataProcessor.GetBiodata(name, DataProcessor.BiodataList);
+                        if (biodata != null)
+                        {
+                            string tanggalLahirString = biodata.TanggalLahir.ToString();
+                            UpdateBioPanelLabels(biodata.Nama[0], biodata.TempatLahir, tanggalLahirString, biodata.JenisKelamin, biodata.GolonganDarah, biodata.Alamat, biodata.Agama, biodata.StatusPerkawinan, biodata.Pekerjaan, biodata.Kewarganegaraan);
+                        }
+                    }
+                    string executionTimeString = executionTime.ToString();
+                    string bestMatchPercentageString = bestMatchPercentage.ToString();
+                    UpdateTempPanelLabels(executionTimeString, bestMatchPercentageString);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An Error Occured: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-            // convert executionTime to string
-            string executionTimeString = executionTime.ToString();
-            string bestMatchPercentageString = bestMatchPercentage.ToString();
-            UpdateTempPanelLabels(executionTimeString, bestMatchPercentageString);
-        }
-        }
-
-        private void FingerprintForm_Load(object sender, EventArgs e)
-        {
-            Console.WriteLine("Fingerprint Matching Program");
-
-            // Konfigurasi DatabaseManager
-            string conn = "server=localhost;user=tubes3;database=tubes3;port=3306;password=stimati";
-            DatabaseManager dbManager = new(conn);
-
-            // Inisialisasi DataProcessor dengan DatabaseManager
-            DataProcessor.Initialize(dbManager);
         }
 
         private void UpdateBioPanelLabels(string nama, string tempatLahir, string tanggalLahir, string jenisKelamin, string golonganDarah, string alamat, string agama, string statusPerkawinan, string pekerjaan, string kewarganegaraan)
         {
-
             labelNama.Text = $"Nama: {nama}";
             labelTempatLahir.Text = $"Tempat Lahir: {tempatLahir}";
             labelTanggalLahir.Text = $"Tanggal Lahir: {tanggalLahir}";
