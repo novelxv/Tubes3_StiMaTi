@@ -49,9 +49,10 @@ namespace algo {
                 return (null, executionTime, 0);
             }
 
-            return (bestMatchFingerprint, executionTime, bestMatchPercentage);
-        }
+            string? name = DataProcessor.GetNamaFromSidikJari(bestMatchFingerprint);
 
+            return (name, executionTime, bestMatchPercentage);
+        }
         /* function to segment image */
         private static List<string> SegmentImage(string inputFingerprintImagePath, int segmentSize){
             Image<Rgba32> image = DataProcessor.LoadBitmap(inputFingerprintImagePath);
