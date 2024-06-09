@@ -232,21 +232,30 @@ namespace Database
             return sb.ToString();
         }
 
-        private static string Shorten(string input)
+    private static string Shorten(string input)
+    {
+        Random random = new();
+        string pattern = "[aeiou]";
+        MatchCollection matches = Regex.Matches(input, pattern, RegexOptions.IgnoreCase);
+        int vowelsToRemove = random.Next(1, matches.Count + 1);
+        string shortenedWord = input;
+
+        for (int i = 0; i < vowelsToRemove; i++)
         {
-            Random random = new();
-            string pattern = "[aeieo]";
-            MatchCollection matches = Regex.Matches(input, pattern, RegexOptions.IgnoreCase);
-            int vowelsToRemove = random.Next(1, matches.Count + 1);
-            string shortenedWord = input;
-            for (int i = 0; i < vowelsToRemove; i++){
-                int indexToRemove = random.Next(0, matches.Count);
-                int vowelIndex = matches[indexToRemove].Index;
-                shortenedWord = shortenedWord.Remove(vowelIndex, 1);
-                matches = Regex.Matches(shortenedWord, pattern, RegexOptions.IgnoreCase);
-            }
-            return shortenedWord;
+            if (matches.Count == 0)
+                break;
+
+            int indexToRemove = random.Next(0, matches.Count);
+            int vowelIndex = matches[indexToRemove].Index;
+
+            shortenedWord = shortenedWord.Remove(vowelIndex, 1);
+
+            // Perbarui MatchCollection setelah penghapusan vokal
+            matches = Regex.Matches(shortenedWord, pattern, RegexOptions.IgnoreCase);
         }
+
+        return shortenedWord;
+    }
 
         private static string CombineAll(string input)
         {
